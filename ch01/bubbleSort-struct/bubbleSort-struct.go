@@ -23,18 +23,17 @@ func main() {
 
 // 方法1
 func studentsSort(students Students) {
-	len := len(students)
+	length := len(students)
+	if students == nil || length < 2 {
+		return
+	}
 
-	for e := len - 1; e > 0; e-- {
+	for e := length - 1; e >= 1; e-- {
 		for i := 0; i < e; i++ {
 			if students[i+1].score > students[i].score {
 				students[i], students[i+1] = students[i+1], students[i]
 			}
 		}
-	}
-
-	for _, i := range students {
-		fmt.Printf("%s ", i.name)
 	}
 }
 

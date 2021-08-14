@@ -27,6 +27,6 @@ func (s *Stack) top() int {
 }
 
 func main() {
-	s := Stack{stack: []int{}}
+	// s := Stack{stack: []int{}}
 
 }
