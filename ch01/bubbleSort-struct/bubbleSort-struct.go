@@ -17,11 +17,12 @@ func main() {
 	// 方法一
 	// studentsSort(students)
 	// 方法二
-	sort.Sort(students)
+	sort.Slice(students, func(i, j int) bool {
+		return students[i].score < students[j].score
+	})
 	fmt.Println(students)
 }
 
-// 方法1
 func studentsSort(students Students) {
 	length := len(students)
 	if students == nil || length < 2 {
@@ -35,17 +36,4 @@ func studentsSort(students Students) {
 			}
 		}
 	}
-}
-
-// 方法二
-func (s Students) Len() int {
-	return len(s)
-}
-
-func (s Students) Less(i, j int) bool {
-	return s[i].score < s[j].score
-}
-
-func (s Students) Swap(i, j int) {
-	s[i], s[j] = s[j], s[i]
 }
