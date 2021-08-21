@@ -94,6 +94,65 @@
   本节主要用到的数据结构为Go语言提供的slice和map
 
   + slice
+
+    ```go
+    package main
+    
+    import "fmt"
+    
+    func main() {
+    	var s1 []int
+    
+    	for i := 0; i < 9; i += 2 {
+    		s1 = append(s1, i)
+    	}
+    	fmt.Println("s1: ", s1)
+    
+    	s2 := make([]int, 16)
+    	s3 := make([]int, 10, 32)
+    	fmt.Println("s2: ", s2)
+    	fmt.Println("s3: ", s3)
+    
+    	fmt.Println("===复制切片:===")
+    	copy(s2, s1)
+    	fmt.Printf("s2 = %v\n", s2)
+    
+    	fmt.Println("===删除切片中指定索引的元素:===")
+    	// 删除索引i位置的元素, s = append(4[:i],s[i+1:]...)
+    	// 以删除索引3位置的元素为例
+    	fmt.Printf("被删除的元素s1[3] = %d\n", s1[3])
+    	s1 = append(s1[:3], s1[4:]...)
+    	fmt.Printf("s1 = %v\n", s1)
+    
+    	fmt.Println("===删除切片首元素:===")
+    	front, s1 := s1[0], s1[1:]
+    	fmt.Printf("front = %d\n", front)
+    	fmt.Printf("s1 = %v\n", s1)
+    
+    	fmt.Println("===删除切片尾元素:===")
+    	tail, s1 := s1[len(s1)-1], s1[:len(s1)-1]
+    	fmt.Printf("tail = %d\n", tail)
+    	fmt.Printf("s1 = %v\n", s1)
+    }
+    ```
+
+    output:
+
+    s1:  [0 2 4 6 8]
+    s2:  [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+    s3:  [0 0 0 0 0 0 0 0 0 0]
+    ==复制切片:==
+    s2 = [0 2 4 6 8 0 0 0 0 0 0 0 0 0 0 0]
+    ==删除切片中指定索引的元素:==
+    被删除的元素s1[3] = 6
+    s1 = [0 2 4 8]
+    ==删除切片首元素:==
+    front = 0
+    s1 = [2 4 8]
+    ==删除切片尾元素:==
+    tail = 8
+    s1 = [2 4]
+
   + map
 
 + 链表
