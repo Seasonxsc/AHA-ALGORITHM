@@ -18,10 +18,12 @@ var (
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	initPoker()
-	deal()
-	winner := play(rand.Intn(2))
+	var n int // 发牌数
+	fmt.Printf("请选择发几张牌: ")
+	fmt.Scanln(&n)
+	deal(n)
 
-	if winner == 0 {
+	if winner := play(rand.Intn(2)); winner == 0 {
 		fmt.Println("小哼获胜！")
 	} else {
 		fmt.Println("小哈获胜！")
@@ -49,8 +51,8 @@ func initPoker() {
 	rand.Shuffle(len(poker), func(i, j int) { poker[i], poker[j] = poker[j], poker[i] })
 }
 
-func deal() {
-	for len(poker) != 0 {
+func deal(n int) {
+	for i := 0; i < n; i++ {
 		xiaoHa = append(xiaoHa, poker[len(poker)-1])
 		poker = poker[:len(poker)-1]
 		xiaoHeng = append(xiaoHeng, poker[len(poker)-1])
@@ -60,19 +62,38 @@ func deal() {
 }
 
 func play(player int) int {
+	count := 1
 	if player == 0 {
+		fmt.Println("小哼先出牌")
 		for len(xiaoHeng) != 0 && len(xiaoHa) != 0 {
+			fmt.Printf("第%d轮:\n", count)
+			fmt.Printf("小哼当前手中的牌是: %v\n", xiaoHeng)
+			fmt.Printf("小哈当前手中的牌是: %v\n", xiaoHa)
 			// 小哼出牌
+			fmt.Printf("小哼打出: ")
 			turn(&xiaoHeng)
 			// 小哈出牌
+			fmt.Printf("小哈打出: ")
 			turn(&xiaoHa)
+			fmt.Printf("当前桌面上的牌: %v\n", desktop)
+
+			count++
 		}
 	} else {
+		fmt.Println("小哈先出牌")
 		for len(xiaoHeng) != 0 && len(xiaoHa) != 0 {
+			fmt.Printf("第%d轮:\n", count)
+			fmt.Printf("小哈当前手中的牌是: %v\n", xiaoHa)
+			fmt.Printf("小哼当前手中的牌是: %v\n", xiaoHeng)
 			// 小哈出牌
+			fmt.Printf("小哈打出: ")
 			turn(&xiaoHa)
 			// 小哼出牌
+			fmt.Printf("小哼打出: ")
 			turn(&xiaoHeng)
+			fmt.Printf("当前桌面上的牌: %v\n", desktop)
+
+			count++
 		}
 	}
 
@@ -85,6 +106,7 @@ func play(player int) int {
 
 func turn(player *[]string) {
 	face := (*player)[len(*player)-1]
+	fmt.Println(face)
 	*player = (*player)[:len(*player)-1]
 	desktop = append(desktop, face)
 	check(face, player)
@@ -94,17 +116,16 @@ func check(face string, player *[]string) {
 	if book[face] != 0 {
 		for i, _ := range desktop {
 			if desktop[i] == face {
-				collection := []string{}
-				collection = append(collection, desktop[i:]...)
-				for j, _ := range collection {
+				collector := []string{}
+				collector = append(collector, desktop[i:]...)
+				for j, _ := range collector {
 					if j == 0 {
 						continue
 					}
-					book[collection[j]]--
+					book[collector[j]]--
 				}
-				collection = append(collection, *player...)
-				*player = collection
-				desktop = desktop[:i]
+				collector = append(collector, *player...)
+				*player, desktop = collector, desktop[:i]
 				break
 			}
 		}
