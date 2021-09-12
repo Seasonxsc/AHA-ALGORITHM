@@ -20,11 +20,59 @@ var MAP = [13][13]byte{
 }
 
 func main() {
-	for i := 0; i < 13; i++ {
-		for j := 0; j < 13; j++ {
-			fmt.Printf("%c", MAP[i][j])
+	enemies, sum, p, q := 0, 0, 0, 0
+	for i := 0; i < len(MAP); i++ {
+		for j := 0; j < len(MAP[i]); j++ {
+			// 首先判断这个点是不是平地
+			if MAP[i][j] == '.' {
+				sum = 0
+				x, y := i, j
+
+				// 向上统计
+				for MAP[x][y] != '#' {
+					if MAP[x][y] == 'G' {
+						sum++
+					}
+					x--
+				}
+
+				x, y = i, j
+				// 向下统计
+				for MAP[x][y] != '#' {
+					if MAP[x][y] == 'G' {
+						sum++
+					}
+					x++
+				}
+
+				x, y = i, j
+				// 向左统计
+				for MAP[x][y] != '#' {
+					if MAP[x][y] == 'G' {
+						sum++
+					}
+					y--
+				}
+
+				x, y = i, j
+				// 向右统计
+				for MAP[x][y] != '#' {
+					if MAP[x][y] == 'G' {
+						sum++
+					}
+					y++
+				}
+
+			}
+
+			if sum > enemies {
+				enemies = sum
+				p = i
+				q = j
+			}
 		}
-		fmt.Println()
 	}
+
+	fmt.Printf("将炸弹放在(%d, %d), 最多可以消灭%d个敌人\n", p, q, enemies)
 
 }
